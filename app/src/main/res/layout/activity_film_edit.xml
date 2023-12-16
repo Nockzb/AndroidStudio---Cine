@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/teal_700"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context=".FilmEditActivity">
+
+    <!-- Primera fila -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:padding="10dp">
+
+        <!-- Imagen con el cartel de la película -->
+        <ImageView
+            android:id="@+id/ivFotoPeli"
+            android:layout_width="91dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            app:srcCompat="@android:drawable/gallery_thumb" />
+
+        <!-- Botón "Tomar una fotografía" -->
+        <Button
+            android:id="@+id/btnTomarFoto"
+            android:layout_width="104sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="2dp"
+            android:text="Tomar fotografía"
+            android:textSize="10sp"
+            app:cornerRadius="20sp" />
+
+        <!-- Botón "Seleccionar una imagen" -->
+        <Button
+            android:id="@+id/btnElegirImg"
+            android:layout_width="104sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Elegir imagen"
+            android:textSize="10sp"
+            app:cornerRadius="20sp" />
+    </LinearLayout>
+
+    <!-- Filas de información -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="50dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:padding="10dp">
+
+        <EditText
+            android:id="@+id/etTituloPeli"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:hint="Título de la pelicula"
+            android:text="" />
+
+        <EditText
+            android:id="@+id/etDirectorPeli"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Nombre del director"
+            android:text="" />
+
+        <EditText
+            android:id="@+id/etAnioPeli"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Año"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/etEnlaceIMDB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Enlace a IMDB"
+            android:text="" />
+
+        <Spinner
+            android:id="@+id/spnGenero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/elegirOpcion"
+            android:entries="@array/opcionesGenero"/>
+
+        <Spinner
+            android:id="@+id/spnFormato"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/elegirOpcion"
+            android:entries="@array/opcionesFormato"/>
+
+        <EditText
+            android:id="@+id/etComentarios"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:hint="Comentarios"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:padding="10dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnCancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="Cancelar" />
+
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guardar" />
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

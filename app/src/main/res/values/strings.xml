@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Cine</string>
+    <string name="txtBtnIrWeb">Ir Al Sitio Web</string>
+    <string name="txtBtnSoporte">Obtener Soporte</string>
+    <string name="txtBtnVolver">Volver</string>
+    <string name="txtBtnAlarma">Alarma</string>
+    <string name="txtCreador">Creado Por Sebastián Villegas</string>
+    <string name="txtToast">Funcionalidad sin implementar</string>
+    <string name="filmA">Ver Película A</string>
+    <string name="filmB">Ver Película B</string>
+    <string name="acercaDe">Acerca de</string>
+    <string name="verIMDB">Ver en IMDB</string>
+    <string name="editarPelicula">Editar Pelicula</string>
+    <string name="volverPrincipio">Volver al Principio</string>
+    <string name="guardar">Guardar</string>
+    <string name="cancelar">Cancelar</string>
+    <!-- Película A -->
+    <string name="nombrePeliA">Orígenes</string>
+    <string name="anioPeliA">Año: 2014</string>
+    <string name="directorPeliA">Director: Mike Cahill</string>
+    <string name="formatoPeliA">Bluray</string>
+    <string name="GeneroPeliA">Drama/Ciencia Ficción</string>
+    <string name="imdb_url_A">https://www.imdb.com/title/tt2884206/</string>
+    <string name="comentariosA">Comentarios:\n</string>
+    <!-- Película B -->
+    <string name="nombrePeliB">Matrix</string>
+    <string name="anioPeliB">Año: 1999</string>
+    <string name="directorPeliB">Director: Lana Wachowski</string>
+    <string name="formatoPeliB">Bluray</string>
+    <string name="GeneroPeliB">Acción/Ciencia ficción</string>
+    <string name="imdb_url_B">https://www.imdb.com/title/tt0133093/</string>
+    <string name="elegirOpcion">Elegir opción</string>
+    <string name="comentariosB">Comentarios:\n</string>
+</resources>

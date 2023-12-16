@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".FilmDataActivity"
+    tools:layout_editor_absoluteX="15dp"
+    tools:layout_editor_absoluteY="0dp">
+
+    <!-- Imagen del cartel de la película -->
+    <!-- Nombre de la película -->
+    <!-- Año de Estreno -->
+    <!-- Género -->
+    <!-- Formato -->
+    <!-- Director -->
+    <!-- Notas del usuario -->
+
+
+    <ImageView
+        android:id="@+id/ivCartel"
+        android:layout_width="225dp"
+        android:layout_height="222dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="192dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.12"
+        tools:src="" />
+
+    <TextView
+        android:id="@+id/tvComentarios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="254dp"
+        android:text=""
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivCartel"
+        app:layout_constraintVertical_bias="0.027" />
+
+
+    <!-- Botones Editar Pelicula, Volver al Principio, Enlace a IMDB -->
+
+    <Button
+        android:id="@+id/btnVolverPrincipio"
+        android:layout_width="115dp"
+        android:layout_height="79dp"
+        android:layout_marginEnd="26dp"
+        android:text="@string/volverPrincipio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnEditarPelic" />
+
+    <Button
+        android:id="@+id/btnEditarPelic"
+        android:layout_width="115dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="26dp"
+        android:text="@string/editarPelicula"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left"
+        app:constraint_referenced_ids="tvNombrePelicula,tvDirector,tvAnioEstreno,tvFormato,btnVerEnIMDB" />
+
+    <TextView
+        android:id="@+id/tvNombrePelicula"
+        android:layout_width="175dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/nombrePeliA"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/ivCartel"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvDirector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/directorPeliA"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/ivCartel"
+        app:layout_constraintTop_toBottomOf="@+id/tvNombrePelicula" />
+
+    <TextView
+        android:id="@+id/tvAnioEstreno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/anioPeliA"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/ivCartel"
+        app:layout_constraintTop_toBottomOf="@+id/tvDirector" />
+
+    <TextView
+        android:id="@+id/tvFormato"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/ivCartel"
+        app:layout_constraintTop_toBottomOf="@+id/tvAnioEstreno" />
+
+    <Button
+        android:id="@+id/btnVerEnIMDB"
+        android:layout_width="134dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
+        android:text="@string/verIMDB"
+        app:layout_constraintStart_toEndOf="@+id/ivCartel"
+        app:layout_constraintTop_toBottomOf="@+id/tvFormato" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
