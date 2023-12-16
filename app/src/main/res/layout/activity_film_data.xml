@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/colorFondo"
     tools:context=".FilmDataActivity"
     tools:layout_editor_absoluteX="15dp"
     tools:layout_editor_absoluteY="0dp">
@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:layout_marginEnd="254dp"
+        android:textSize="15sp"
         android:text=""
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,32 +41,47 @@
         app:layout_constraintTop_toBottomOf="@+id/ivCartel"
         app:layout_constraintVertical_bias="0.026" />
 
-    <Button
+    <!-- Guideline para centrar verticalmente los botones -->
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnVerEnIMDB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="112dp"
+        android:text="@string/verIMDB"
+        app:backgroundTint="@color/colorBotones"
+        app:cornerRadius="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnVolverPrincipio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnVolverPrincipio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="106dp"
-        android:layout_marginTop="210dp"
-        android:layout_marginEnd="107dp"
         android:text="@string/volverPrincipio"
+        app:backgroundTint="@color/colorBotones"
         app:layout_constraintBottom_toTopOf="@+id/btnEditarPelic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivCartel"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEditarPelic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="123dp"
-        android:layout_marginEnd="123dp"
-        android:layout_marginBottom="160dp"
+        android:layout_marginBottom="76dp"
         android:text="@string/editarPelicula"
+        app:backgroundTint="@color/colorBotones"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnVolverPrincipio" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineCenterVertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier5"
@@ -75,25 +91,39 @@
         app:constraint_referenced_ids="btnVerEnIMDB,tvDirector,tvAnioEstreno,tvFormato,tvNombrePelicula"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnVerEnIMDB"
-        android:layout_width="0dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/verIMDB"
+    <TextView
+        android:id="@+id/tvGenero"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:text=" "
+        android:textColor="@color/white"
+        android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@+id/ivCartel"
-        app:layout_constraintTop_toBottomOf="@+id/tvGenero" />
+        app:layout_constraintTop_toBottomOf="@+id/tvFormato" />
+
+    <TextView
+        android:id="@+id/tvFormato"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:text=" "
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@+id/ivCartel"
+        app:layout_constraintTop_toBottomOf="@+id/tvAnioEstreno" />
 
     <TextView
         android:id="@+id/tvDirector"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="40dp"
         android:text=" "
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/tvAnioEstreno"
+        android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@+id/ivCartel"
         app:layout_constraintTop_toBottomOf="@+id/tvNombrePelicula" />
 
@@ -101,45 +131,24 @@
         android:id="@+id/tvAnioEstreno"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
         android:text=" "
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/tvFormato"
+        android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@+id/ivCartel"
         app:layout_constraintTop_toBottomOf="@+id/tvDirector" />
-
-    <TextView
-        android:id="@+id/tvFormato"
-        android:layout_width="150dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:text=" "
-        android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@+id/ivCartel"
-        app:layout_constraintTop_toBottomOf="@+id/tvAnioEstreno" />
-
-    <TextView
-        android:id="@+id/tvGenero"
-        android:layout_width="150dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:text=" "
-        android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@+id/ivCartel"
-        app:layout_constraintTop_toBottomOf="@+id/tvFormato" />
 
     <TextView
         android:id="@+id/tvNombrePelicula"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="64dp"
-        android:layout_marginBottom="5dp"
         android:text=" "
         android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/tvDirector"
         app:layout_constraintStart_toEndOf="@+id/ivCartel"
         app:layout_constraintTop_toTopOf="parent" />
 

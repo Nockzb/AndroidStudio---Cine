@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/black"
+    android:background="@color/colorFondo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AboutActivity">
@@ -41,13 +41,14 @@
         tools:ignore="UseAppTint" />
 
     <!-- Botones IrWeb, Soporte y Volver -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPelicRelac"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="103dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="103dp"
+        app:backgroundTint="@color/colorBotones"
         android:text="@string/txtBtnIrWeb"
         app:layout_constraintBottom_toTopOf="@+id/btnEditarPelic"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,13 +56,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnVolverPrincipio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="135dp"
         android:layout_marginEnd="135dp"
         android:layout_marginBottom="334dp"
+        app:backgroundTint="@color/colorBotones"
         android:text="@string/txtBtnVolver"
         app:layout_constraintBottom_toTopOf="@+id/tvCreador"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,12 +71,13 @@
         app:layout_constraintTop_toBottomOf="@+id/btnEditarPelic"
         tools:ignore="MissingConstraints" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEditarPelic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="91dp"
         android:layout_marginEnd="91dp"
+        app:backgroundTint="@color/colorBotones"
         android:text="@string/txtBtnSoporte"
         app:layout_constraintBottom_toTopOf="@+id/btnVolverPrincipio"
         app:layout_constraintEnd_toEndOf="parent"

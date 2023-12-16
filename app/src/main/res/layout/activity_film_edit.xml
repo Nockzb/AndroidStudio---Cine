@@ -2,7 +2,7 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/teal_700"
+    android:background="@color/colorFondo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -28,8 +28,7 @@
             android:layout_marginEnd="8dp"
             app:srcCompat="@android:drawable/gallery_thumb" />
 
-        <!-- Botón "Tomar una fotografía" -->
-        <Button
+         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnTomarFoto"
             android:layout_width="104sp"
             android:layout_height="wrap_content"
@@ -37,14 +36,16 @@
             android:layout_marginEnd="2dp"
             android:text="Tomar fotografía"
             android:textSize="10sp"
-            app:cornerRadius="20sp" />
+            app:cornerRadius="20sp"
+            app:backgroundTint="@color/colorBotones" />
 
         <!-- Botón "Seleccionar una imagen" -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnElegirImg"
             android:layout_width="104sp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            app:backgroundTint="@color/colorBotones"
             android:text="Elegir imagen"
             android:textSize="10sp"
             app:cornerRadius="20sp" />
@@ -72,6 +73,7 @@
             android:id="@+id/etDirectorPeli"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="@color/white"
             android:hint="Nombre del director"
             android:text="" />
 
@@ -79,6 +81,7 @@
             android:id="@+id/etAnioPeli"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="@color/white"
             android:hint="Año"
             android:inputType="number" />
 
@@ -86,6 +89,7 @@
             android:id="@+id/etEnlaceIMDB"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="@color/white"
             android:hint="Enlace a IMDB"
             android:text="" />
 
@@ -93,6 +97,8 @@
             android:id="@+id/spnGenero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:popupBackground="@color/colorFondo"
+            style="@style/SpinnerTextStyle"
             android:prompt="@string/elegirOpcion"
             android:entries="@array/opcionesGenero"/>
 
@@ -100,6 +106,9 @@
             android:id="@+id/spnFormato"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:popupBackground="@color/colorFondo"
+            style="@style/SpinnerTextStyle"
             android:prompt="@string/elegirOpcion"
             android:entries="@array/opcionesFormato"/>
 
@@ -122,17 +131,19 @@
         android:padding="10dp"
         android:gravity="center">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
+            app:backgroundTint="@color/colorBotones"
             android:text="Cancelar" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGuardar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:backgroundTint="@color/colorBotones"
             android:text="Guardar" />
     </LinearLayout>
 

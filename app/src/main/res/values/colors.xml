@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorFondo">#1c1c1c</color>
+    <color name="colorBotones">#f7393b</color>
+    <color name="colorActionBar">#f7393b</color>
+    <color name="colorActionBarVariant">#f9492c</color>
+    <color name="colorActionBarSecondary">#dd822a</color>
+    <color name="colorActionBarSecondaryVariant">#ed8f29</color>
 </resources>

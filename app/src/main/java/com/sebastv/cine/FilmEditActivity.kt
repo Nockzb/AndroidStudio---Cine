@@ -70,6 +70,7 @@ class FilmEditActivity : AppCompatActivity() {
                 etComentarios.setText(comentariosB)
             }
         }
+
         // Botones
         val btnTomarFoto: Button = findViewById(R.id.btnTomarFoto)
         val btnElegirImg: Button = findViewById(R.id.btnElegirImg)
