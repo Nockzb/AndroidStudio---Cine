@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 
@@ -14,7 +15,8 @@ class FilmEditActivity : AppCompatActivity() {
     companion object {
         var ID_EDIT = ""
     }
-    // Inputs
+    // Inputs e imagen
+    private lateinit var ivFotoPeli: ImageView
     private lateinit var etTituloPeli: EditText
     private lateinit var etDirectorPeli: EditText
     private lateinit var etAnioPeli: EditText
@@ -38,8 +40,10 @@ class FilmEditActivity : AppCompatActivity() {
         etComentarios = findViewById(R.id.etComentarios)
         spnFormato = findViewById<View?>(R.id.spnFormato) as Spinner
         spnGenero =  findViewById<View?>(R.id.spnGenero) as Spinner
+        ivFotoPeli = findViewById(R.id.ivFotoPeli)
 
         // Actualiza los elementos de la interfaz según el id de la película
+        // para pre-rellenar los EditTexts
         when (ID_EDIT) {
             "A" -> {
                 // Película A
@@ -48,12 +52,14 @@ class FilmEditActivity : AppCompatActivity() {
                 val directorA = getString(R.string.directorPeliA)
                 val imdbA = getString(R.string.imdb_url_A)
                 val comentariosA = getString(R.string.comentariosA)
+                val imageResourceId: Int = R.drawable.origins_movie
 
                 etTituloPeli.setText(nombreA)
                 etAnioPeli.setText(anioA)
                 etDirectorPeli.setText(directorA)
                 etEnlaceIMDB.setText(imdbA)
                 etComentarios.setText(comentariosA)
+                ivFotoPeli.setImageResource(imageResourceId)
             }
             "B" -> {
                 // Película B
@@ -62,12 +68,14 @@ class FilmEditActivity : AppCompatActivity() {
                 val directorB = getString(R.string.directorPeliB)
                 val imdbB = getString(R.string.imdb_url_B)
                 val comentariosB = getString(R.string.comentariosB)
+                val imageResourceId: Int = R.drawable.matrix_movie
 
                 etTituloPeli.setText(nombreB)
                 etAnioPeli.setText(anioB)
                 etDirectorPeli.setText(directorB)
                 etEnlaceIMDB.setText(imdbB)
                 etComentarios.setText(comentariosB)
+                ivFotoPeli.setImageResource(imageResourceId)
             }
         }
 
@@ -118,8 +126,6 @@ class FilmEditActivity : AppCompatActivity() {
         resultIntent.putExtra("formato", opcFormato)
         resultIntent.putExtra("genero", opcGenero)
         resultIntent.putExtra("comentario", nuevoComentario)
-
-        // Obtener el identificador de la película actual
 
         // Actualizar las variables estáticas según el identificador de la película
         when (ID_EDIT) {

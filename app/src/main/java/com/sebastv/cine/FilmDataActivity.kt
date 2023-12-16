@@ -15,7 +15,10 @@ class FilmDataActivity : AppCompatActivity() {
     companion object {
         const val REQUEST_EDIT_FILM = 1
         var ID_EDIT_FILM = ""
+
+        // Variables estáticas para almacenar los valores modificados
         var urlImdbBoton: String = ""
+        // var linkImg: String = ""
 
         var nombrePeliA: String = ""
         var anioPeliA: String = ""
@@ -40,14 +43,6 @@ class FilmDataActivity : AppCompatActivity() {
 
         // Obtener el filmId enviado desde la actividad FilmListActivity
         ID_EDIT_FILM = intent.getStringExtra(FilmListActivity.EXTRA_FILM_ID).toString()
-
-
-        // Obtener URL de IMBD según el id de la película
-        //val urlImdbBoton: String = when (ID_EDIT_FILM) {
-        //    "A" -> imdbUrlA
-        //    "B" -> imdbUrlB
-        //    else -> "https://www.google.com/"
-        //}
 
         // Obtener el recurso de imagen según el id de la película
         val imageResourceId: Int = when (ID_EDIT_FILM) {
@@ -151,7 +146,8 @@ class FilmDataActivity : AppCompatActivity() {
     }
 
     private fun actualizarInterfaz(nombre: String, anio: String, director: String, enlaceIMDB: String, formato: String, genero: String, comentarios: String) {
-        // Actualiza los elementos de la interfaz de usuario con los detalles de la película
+        // Actualiza los elementos de la interfaz con la info de la película
+        // que viene desde la otra actividad en el intent
         val tvNombrePelicula: TextView = findViewById(R.id.tvNombrePelicula)
         val tvAnioEstreno: TextView = findViewById(R.id.tvAnioEstreno)
         val tvDirector: TextView = findViewById(R.id.tvDirector)
