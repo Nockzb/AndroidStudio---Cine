@@ -15,6 +15,23 @@ class FilmDataActivity : AppCompatActivity() {
     companion object {
         const val REQUEST_EDIT_FILM = 1
         var ID_EDIT_FILM = ""
+        var urlImdbBoton: String = ""
+
+        var nombrePeliA: String = ""
+        var anioPeliA: String = ""
+        var directorPeliA: String = ""
+        var imdbUrlA: String = ""
+        var formatoPeliA: String = ""
+        var generoPeliA: String = ""
+        var comentariosPeliA: String = ""
+
+        var nombrePeliB: String = ""
+        var anioPeliB: String = ""
+        var directorPeliB: String = ""
+        var imdbUrlB: String = ""
+        var formatoPeliB: String = ""
+        var generoPeliB: String = ""
+        var comentariosPeliB: String = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,11 +43,11 @@ class FilmDataActivity : AppCompatActivity() {
 
 
         // Obtener URL de IMBD según el id de la película
-        val imdbUrl: String = when (ID_EDIT_FILM) {
-            "A" -> getString(R.string.imdb_url_A)
-            "B" -> getString(R.string.imdb_url_B)
-            else -> "https://www.google.com/"
-        }
+        //val urlImdbBoton: String = when (ID_EDIT_FILM) {
+        //    "A" -> imdbUrlA
+        //    "B" -> imdbUrlB
+        //    else -> "https://www.google.com/"
+        //}
 
         // Obtener el recurso de imagen según el id de la película
         val imageResourceId: Int = when (ID_EDIT_FILM) {
@@ -47,11 +64,39 @@ class FilmDataActivity : AppCompatActivity() {
         when (ID_EDIT_FILM) {
             "A" -> {
                 // Película A
-                actualizarInterfaz(getString(R.string.nombrePeliA), getString(R.string.anioPeliA), getString(R.string.directorPeliA), getString(R.string.imdb_url_A), getString(R.string.formatoPeliA), getString(R.string.GeneroPeliA), getString(R.string.comentariosA))
+                // Si aún no se editó nada, muestra la pelicula A
+                if (nombrePeliA.isNullOrEmpty()){
+                    actualizarInterfaz(getString(R.string.nombrePeliA), getString(R.string.anioPeliA), getString(R.string.directorPeliA), getString(R.string.imdb_url_A), getString(R.string.formatoPeliA), getString(R.string.GeneroPeliA), getString(R.string.comentariosA))
+                } else {
+                    // Luego de la edición muestra los nuevos valores
+                    actualizarInterfaz(
+                        nombrePeliA,
+                        anioPeliA,
+                        directorPeliA,
+                        imdbUrlA,
+                        formatoPeliA,
+                        generoPeliA,
+                        comentariosPeliA
+                    )
+                }
             }
             "B" -> {
                 // Película B
-                actualizarInterfaz(getString(R.string.nombrePeliB), getString(R.string.anioPeliB), getString(R.string.directorPeliB),  getString(R.string.imdb_url_B), getString(R.string.formatoPeliB), getString(R.string.GeneroPeliB), getString(R.string.comentariosB))
+                // Si aún no se editó nada, muestra la pelicula B
+                if (nombrePeliB.isNullOrEmpty()){
+                    actualizarInterfaz(getString(R.string.nombrePeliB), getString(R.string.anioPeliB), getString(R.string.directorPeliB),  getString(R.string.imdb_url_B), getString(R.string.formatoPeliB), getString(R.string.GeneroPeliB), getString(R.string.comentariosB))
+                } else {
+                    // Luego de la edición muestra los nuevos valores
+                    actualizarInterfaz(
+                        nombrePeliB,
+                        anioPeliB,
+                        directorPeliB,
+                        imdbUrlB,
+                        formatoPeliB,
+                        generoPeliB,
+                        comentariosPeliB
+                    )
+                }
             }
         }
 
@@ -62,7 +107,7 @@ class FilmDataActivity : AppCompatActivity() {
 
         // Manejador para el botón "Ver en IMDB"
         btnVerEnIMDB.setOnClickListener {
-            val webpage = Uri.parse(imdbUrl)
+            val webpage = Uri.parse(urlImdbBoton)
             val intent = Intent(Intent.ACTION_VIEW, webpage)
             startActivity(intent)
         }
@@ -110,10 +155,10 @@ class FilmDataActivity : AppCompatActivity() {
         val tvNombrePelicula: TextView = findViewById(R.id.tvNombrePelicula)
         val tvAnioEstreno: TextView = findViewById(R.id.tvAnioEstreno)
         val tvDirector: TextView = findViewById(R.id.tvDirector)
-        val tvFormato: TextView = findViewById(R.id.tvFormato)
-        val tvGenero: TextView = findViewById(R.id.tvGenero)
+        val tvFormato: TextView = findViewById(R.id.tvGenero)
+        val tvGenero: TextView = findViewById(R.id.tvFormato)
         val tvComentarios: TextView = findViewById(R.id.tvComentarios)
-        // val nvoEnlaceImdb: String
+
 
         tvNombrePelicula.text = nombre
         tvAnioEstreno.text = anio
@@ -121,6 +166,7 @@ class FilmDataActivity : AppCompatActivity() {
         tvFormato.text = formato
         tvGenero.text = genero
         tvComentarios.text = comentarios
+        urlImdbBoton = enlaceIMDB
     }
 
     // Actualizar los elementos de la interfaz según el id de la película

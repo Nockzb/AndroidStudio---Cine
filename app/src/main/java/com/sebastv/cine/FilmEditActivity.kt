@@ -117,13 +117,38 @@ class FilmEditActivity : AppCompatActivity() {
         resultIntent.putExtra("formato", opcFormato)
         resultIntent.putExtra("genero", opcGenero)
         resultIntent.putExtra("comentario", nuevoComentario)
+
+        // Obtener el identificador de la película actual
+
+        // Actualizar las variables estáticas según el identificador de la película
+        when (ID_EDIT) {
+            "A" -> {
+                FilmDataActivity.nombrePeliA = nuevoNombre
+                FilmDataActivity.anioPeliA = "Año: $nuevoAnio"
+                FilmDataActivity.directorPeliA = "Director: $nuevoDirector"
+                FilmDataActivity.imdbUrlA = nuevoImdb
+                FilmDataActivity.formatoPeliA = opcFormato
+                FilmDataActivity.generoPeliA = opcGenero
+                FilmDataActivity.comentariosPeliA = nuevoComentario
+            }
+            "B" -> {
+                FilmDataActivity.nombrePeliB = nuevoNombre
+                FilmDataActivity.anioPeliB = "Año: $nuevoAnio"
+                FilmDataActivity.directorPeliB = "Director: $nuevoDirector"
+                FilmDataActivity.imdbUrlB = nuevoImdb
+                FilmDataActivity.formatoPeliB = opcFormato
+                FilmDataActivity.generoPeliB = opcGenero
+                FilmDataActivity.comentariosPeliB = nuevoComentario
+            }
+        }
+
         // Se coloca el resultado a ok y se envían los nuevos valores
         setResult(Activity.RESULT_OK, resultIntent)
         finish()
     }
 
     // Funcion que establece resultado a CANCEL
-    // Muestra un mensaje de cencelado y te manda a la pantalla anterior
+    // Muestra un mensaje de cancelado y te manda a la pantalla anterior
     private fun cancel() {
         setResult(Activity.RESULT_CANCELED)
         Toast.makeText(this,"Operación cancelada", Toast.LENGTH_SHORT).show()
