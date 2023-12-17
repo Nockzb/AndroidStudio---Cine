@@ -16,7 +16,7 @@
     <string name="cancelar">Cancelar</string>
     <!-- Película A -->
     <string name="nombrePeliA">Orígenes</string>
-    <string name="anioPeliA">Año: 2014</string>
+    <string name="anioPeliA">2014</string>
     <string name="directorPeliA">Director: Mike Cahill</string>
     <string name="formatoPeliA">Bluray</string>
     <string name="GeneroPeliA">Drama/Ciencia Ficción</string>
@@ -24,8 +24,8 @@
     <string name="comentariosA">Comentarios:\n</string>
     <!-- Película B -->
     <string name="nombrePeliB">Matrix</string>
-    <string name="anioPeliB">Año: 1999</string>
-    <string name="directorPeliB">Director: Lana Wachowski</string>
+    <string name="anioPeliB">1999</string>
+    <string name="directorPeliB">Lana Wachowski</string>
     <string name="formatoPeliB">Bluray</string>
     <string name="GeneroPeliB">Acción/Ciencia ficción</string>
     <string name="imdb_url_B">https://www.imdb.com/title/tt0133093/</string>

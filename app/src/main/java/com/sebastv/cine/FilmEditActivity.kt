@@ -14,6 +14,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.io.ByteArrayOutputStream
 
@@ -24,6 +25,9 @@ class FilmEditActivity : AppCompatActivity() {
         const val PEDIDO_CAPTURA_IMAGEN = 1
         const val PEDIDO_ELEGIR_IMAGEN = 2
         var DEFAULT_IMAGE_RESOURCE = R.drawable.insertar_img
+        private val CODIGO_DE_SOLICITUD_DE_PERMISO = 42
+        // Variable para almacenar el URI de la img
+        var imageUri: Uri? = null
     }
     // Inputs e imagen
     private lateinit var ivFotoPeli: ImageView
@@ -35,8 +39,6 @@ class FilmEditActivity : AppCompatActivity() {
     private lateinit var spnFormato: Spinner
     private lateinit var spnGenero: Spinner
 
-    // Variable para almacenar el URI de la img
-    private var imageUri: Uri? = null
 
     // Propiedad para almacenar el Intent de resultado
     private lateinit var resultIntent: Intent
@@ -51,6 +53,19 @@ class FilmEditActivity : AppCompatActivity() {
                 imageUri = Uri.parse(savedImageUri)
                 ivFotoPeli.setImageURI(imageUri)
             }
+        }
+
+        // Verifica si se tiene el permiso
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            // Si se tiene el permiso, realiza la operación que necesitas
+            // Puedes poner aquí la lógica para cargar una imagen, si es necesario
+        } else {
+            // Si no se tiene el permiso, solicítalo al usuario
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.CAMERA),
+                CODIGO_DE_SOLICITUD_DE_PERMISO
+            )
         }
 
         // Obtener el filmId enviado desde la otra actividad
@@ -119,10 +134,14 @@ class FilmEditActivity : AppCompatActivity() {
             ) {
                 lanzarTomarFotoIntent()
             } else {
-                // Solicitar permisos de la cámara
-                requestPermissions(arrayOf(android.Manifest.permission.CAMERA), PEDIDO_CAPTURA_IMAGEN)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.CAMERA),
+                    CODIGO_DE_SOLICITUD_DE_PERMISO
+                )
             }
         }
+
 
         // Manejador para el botón "Elegir Imagen"
         btnElegirImg.setOnClickListener {
@@ -204,21 +223,19 @@ class FilmEditActivity : AppCompatActivity() {
     // Función para solicitud de permisos de la cámara
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<String>,
+        permissions: Array<out String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            PEDIDO_CAPTURA_IMAGEN -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    lanzarTomarFotoIntent()
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Permiso de la cámara denegado",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        if (requestCode == CODIGO_DE_SOLICITUD_DE_PERMISO) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                lanzarTomarFotoIntent()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Permiso de la cámara denegado",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

@@ -2,6 +2,7 @@ package com.sebastv.cine
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.sebastv.cine.FilmEditActivity.Companion.IMAGE_URI_KEY
 import com.sebastv.cine.FilmEditActivity.Companion.PEDIDO_ELEGIR_IMAGEN
+import java.io.InputStream
 
 
 class FilmDataActivity : AppCompatActivity() {
@@ -41,7 +43,8 @@ class FilmDataActivity : AppCompatActivity() {
         var comentariosPeliB: String = ""
     }
 
-    lateinit var uriImg: Uri
+    private var uriImg: Uri? = FilmEditActivity.imageUri
+    private var editedData: Intent? = null
     private lateinit var resultIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,11 +58,24 @@ class FilmDataActivity : AppCompatActivity() {
         resultIntent = Intent()
 
         // Inicializar uriImg con un valor por defecto
-        uriImg = Uri.parse("android.resource://$packageName/${FilmEditActivity.DEFAULT_IMAGE_RESOURCE}")
+        // uriImg = Uri.parse("android.resource://$packageName/${FilmEditActivity.DEFAULT_IMAGE_RESOURCE}")
 
         // Se inicializa el ImageView
         ivCartel = findViewById(R.id.ivCartel)
         // ivCartel.setImageResource(imageResourceId)
+
+        if (editedData != null) {
+            val newImageUriString = editedData!!.getStringExtra(IMAGE_URI_KEY)
+            if (!newImageUriString.isNullOrEmpty()) {
+                try {
+                    uriImg = Uri.parse(newImageUriString)
+                    ivCartel.setImageURI(uriImg)
+                } catch (e: Exception) {
+                    // Manejar la excepción
+                    e.printStackTrace()
+                }
+            }
+        }
 
         // Actualizar los elementos de la interfaz según el id de la película
         when (ID_EDIT_FILM) {
@@ -73,6 +89,18 @@ class FilmDataActivity : AppCompatActivity() {
                     actualizarInterfaz(getString(R.string.nombrePeliA), getString(R.string.anioPeliA), getString(R.string.directorPeliA), getString(R.string.imdb_url_A), getString(R.string.formatoPeliA), getString(R.string.GeneroPeliA), getString(R.string.comentariosA), uriImgGuardada)
                 } else {
                     // Luego de la edición muestra los nuevos valores
+                    if (editedData != null) {
+                        val newImageUriString = editedData!!.getStringExtra(IMAGE_URI_KEY)
+                        if (!newImageUriString.isNullOrEmpty()) {
+                            try {
+                                uriImg = Uri.parse(newImageUriString)
+                                ivCartel.setImageURI(uriImg)
+                            } catch (e: Exception) {
+                                // Manejar la excepción
+                                e.printStackTrace()
+                            }
+                        }
+                    }
                     actualizarInterfaz(
                         nombrePeliA,
                         anioPeliA,
@@ -94,6 +122,18 @@ class FilmDataActivity : AppCompatActivity() {
                     actualizarInterfaz(getString(R.string.nombrePeliB), getString(R.string.anioPeliB), getString(R.string.directorPeliB),  getString(R.string.imdb_url_B), getString(R.string.formatoPeliB), getString(R.string.GeneroPeliB), getString(R.string.comentariosB), uriImgGuardada)
                 } else {
                     // Luego de la edición muestra los nuevos valores
+                    if (editedData != null) {
+                        val newImageUriString = editedData!!.getStringExtra(IMAGE_URI_KEY)
+                        if (!newImageUriString.isNullOrEmpty()) {
+                            try {
+                                uriImg = Uri.parse(newImageUriString)
+                                ivCartel.setImageURI(uriImg)
+                            } catch (e: Exception) {
+                                // Manejar la excepción
+                                e.printStackTrace()
+                            }
+                        }
+                    }
                     actualizarInterfaz(
                         nombrePeliB,
                         anioPeliB,
@@ -167,6 +207,22 @@ class FilmDataActivity : AppCompatActivity() {
             // Actualizar resultIntent con la nueva imageUri
             resultIntent.putExtra(IMAGE_URI_KEY, imageUri.toString())
         }
+
+        // Almacenar la información en la variable editedData
+        editedData = data
+
+        // Almacenar la información en la variable imageUri
+        uriImg = try {
+            Uri.parse(data?.getStringExtra(IMAGE_URI_KEY))
+        } catch (e: Exception) {
+            Uri.parse("android.resource://$packageName/${FilmEditActivity.DEFAULT_IMAGE_RESOURCE}")
+        }
+
+        // Inicializar resultIntent antes de usarla
+        resultIntent = Intent()
+
+        // Actualizar resultIntent con la nueva imageUri
+        resultIntent.putExtra(IMAGE_URI_KEY, uriImg.toString())
     }
 
     private fun navigateToList() {
@@ -186,7 +242,16 @@ class FilmDataActivity : AppCompatActivity() {
         val tvComentarios: TextView = findViewById(R.id.tvComentarios)
 
         // Cargar la imagen desde el URI
-        ivCartel.setImageURI(imageUri)
+        // ivCartel.setImageURI(imageUri)
+        try {
+            val inputStream: InputStream? = imageUri?.let { contentResolver.openInputStream(it) }
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            ivCartel.setImageBitmap(bitmap)
+            inputStream?.close()
+        } catch (e: Exception) {
+            // Manejar la excepción
+            e.printStackTrace()
+        }
 
         tvNombrePelicula.text = nombre
         tvAnioEstreno.text = anio
