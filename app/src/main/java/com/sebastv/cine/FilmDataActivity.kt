@@ -1,5 +1,6 @@
 package com.sebastv.cine
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.sebastv.cine.FilmEditActivity.Companion.IMAGE_URI_KEY
+import com.sebastv.cine.FilmEditActivity.Companion.PEDIDO_ELEGIR_IMAGEN
 
 
 class FilmDataActivity : AppCompatActivity() {
@@ -20,7 +23,6 @@ class FilmDataActivity : AppCompatActivity() {
 
         // Variables estáticas para almacenar los valores modificados
         lateinit var urlImdbBoton: String
-        lateinit var UriImg: Uri
 
         var nombrePeliA: String = ""
         var anioPeliA: String = ""
@@ -39,6 +41,9 @@ class FilmDataActivity : AppCompatActivity() {
         var comentariosPeliB: String = ""
     }
 
+    lateinit var uriImg: Uri
+    private lateinit var resultIntent: Intent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_film_data)
@@ -46,12 +51,11 @@ class FilmDataActivity : AppCompatActivity() {
         // Obtener el filmId enviado desde la actividad FilmListActivity
         ID_EDIT_FILM = intent.getStringExtra(FilmListActivity.EXTRA_FILM_ID).toString()
 
-        // Obtener el recurso de imagen según el id de la película
-        // val imageResourceId: Int = when (ID_EDIT_FILM) {
-           // "A" -> R.drawable.origins_movie
-           // "B" -> R.drawable.matrix_movie
-           // else -> -20
-        // }
+        // Se Inicializa el resultIntent
+        resultIntent = Intent()
+
+        // Inicializar uriImg con un valor por defecto
+        uriImg = Uri.parse("android.resource://$packageName/${FilmEditActivity.DEFAULT_IMAGE_RESOURCE}")
 
         // Se inicializa el ImageView
         ivCartel = findViewById(R.id.ivCartel)
@@ -77,7 +81,7 @@ class FilmDataActivity : AppCompatActivity() {
                         formatoPeliA,
                         generoPeliA,
                         comentariosPeliA,
-                        UriImg
+                        uriImg
                     )
                 }
             }
@@ -98,7 +102,7 @@ class FilmDataActivity : AppCompatActivity() {
                         formatoPeliB,
                         generoPeliB,
                         comentariosPeliB,
-                        UriImg
+                        uriImg
                     )
                 }
             }
@@ -138,13 +142,30 @@ class FilmDataActivity : AppCompatActivity() {
     // Este método se llama cuando FilmEditActivity finaliza
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        // Logica para REQUEST_EDIT_FILM
         if (requestCode == REQUEST_EDIT_FILM && resultCode == RESULT_OK) {
             // El usuario guardó los cambios
             actualizarInterfazSegunID(data)
             Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show()
+
+            setResult(Activity.RESULT_OK, resultIntent)
         } else if (resultCode == RESULT_CANCELED) {
             // El usuario canceló la operación
             Toast.makeText(this, "Operación cancelada", Toast.LENGTH_SHORT).show()
+        }
+
+        // Manejo para la selección de imágenes
+        if (requestCode == PEDIDO_ELEGIR_IMAGEN && resultCode == Activity.RESULT_OK) {
+            val imageUri: Uri? = data?.data
+
+            // Actualizar la vista previa de la imagen
+            ivCartel.setImageURI(imageUri)
+
+            // Inicializar resultIntent antes de usarla
+            resultIntent = Intent()
+
+            // Actualizar resultIntent con la nueva imageUri
+            resultIntent.putExtra(IMAGE_URI_KEY, imageUri.toString())
         }
     }
 
@@ -181,8 +202,8 @@ class FilmDataActivity : AppCompatActivity() {
         when (ID_EDIT_FILM) {
             "A", "B" -> {
                 // Recuperar el URI de la imagen como cadena y convertirlo a Uri
-                val uriString = data?.getStringExtra(FilmEditActivity.IMAGE_URI_KEY)
-                val imageUri = uriString?.let { Uri.parse(it) }
+                val uriString = data?.getStringExtra(IMAGE_URI_KEY)
+                uriImg = Uri.parse(uriString)
                 // Película A
                 actualizarInterfaz(
                     data?.getStringExtra("nombre") ?: "Ingresar nombre",
@@ -192,7 +213,7 @@ class FilmDataActivity : AppCompatActivity() {
                     data?.getStringExtra("formato") ?: "Ingresar director",
                     data?.getStringExtra("genero") ?: "Ingresar director",
                     data?.getStringExtra("comentario") ?: "Ingresar comentarios",
-                    imageUri
+                    uriImg
                 )
             }
         }

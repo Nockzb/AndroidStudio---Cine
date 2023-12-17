@@ -38,12 +38,8 @@ class FilmEditActivity : AppCompatActivity() {
     // Variable para almacenar el URI de la img
     private var imageUri: Uri? = null
 
-    // Funcion para que almacene la info de la Uri de la imagen al destruirse la actividad
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        // Guarda el URI de la imagen en el estado de la instancia
-        outState.putString(IMAGE_URI_KEY, imageUri?.toString())
-    }
+    // Propiedad para almacenar el Intent de resultado
+    private lateinit var resultIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +82,7 @@ class FilmEditActivity : AppCompatActivity() {
                 val directorA = getString(R.string.directorPeliA)
                 val imdbA = getString(R.string.imdb_url_A)
                 val comentariosA = getString(R.string.comentariosA)
-                val imageResourceId: Int = R.drawable.origins_movie
+                val imageResourceId: Int = R.drawable.insertar_img
 
                 etTituloPeli.setText(nombreA)
                 etAnioPeli.setText(anioA)
@@ -102,7 +98,7 @@ class FilmEditActivity : AppCompatActivity() {
                 val directorB = getString(R.string.directorPeliB)
                 val imdbB = getString(R.string.imdb_url_B)
                 val comentariosB = getString(R.string.comentariosB)
-                val imageResourceId: Int = R.drawable.matrix_movie
+                val imageResourceId: Int = R.drawable.insertar_img
 
                 etTituloPeli.setText(nombreB)
                 etAnioPeli.setText(anioB)
@@ -155,17 +151,20 @@ class FilmEditActivity : AppCompatActivity() {
         val opcFormato = spnFormato.selectedItem.toString()
         val opcGenero = spnGenero.selectedItem.toString()
 
-        val resultIntent = Intent()
-        // Enviar el nuevo Uri de imagen
-        resultIntent.putExtra(IMAGE_URI_KEY,imageUri?.toString() ?: Uri.parse("android.resource://$packageName/${DEFAULT_IMAGE_RESOURCE}").toString()
-        )
-        resultIntent.putExtra("nombre", nuevoNombre)
-        resultIntent.putExtra("anio", nuevoAnio)
-        resultIntent.putExtra("director", nuevoDirector)
-        resultIntent.putExtra("enlaceImdb", nuevoImdb)
-        resultIntent.putExtra("formato", opcFormato)
-        resultIntent.putExtra("genero", opcGenero)
-        resultIntent.putExtra("comentario", nuevoComentario)
+        // Crear el Intent de resultado
+        resultIntent = Intent()
+        resultIntent.apply {
+            // Asignar un valor predeterminado a imageUri si es null
+            val uri = imageUri ?: Uri.parse("android.resource://$packageName/${DEFAULT_IMAGE_RESOURCE}")
+            putExtra(IMAGE_URI_KEY, uri.toString())
+            putExtra("nombre", nuevoNombre)
+            putExtra("anio", nuevoAnio)
+            putExtra("director", nuevoDirector)
+            putExtra("enlaceImdb", nuevoImdb)
+            putExtra("formato", opcFormato)
+            putExtra("genero", opcGenero)
+            putExtra("comentario", nuevoComentario)
+        }
 
         // Actualizar las variables estáticas según el identificador de la película
         when (ID_EDIT) {
@@ -229,15 +228,15 @@ class FilmEditActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             PEDIDO_CAPTURA_IMAGEN -> {
-                if (resultCode == RESULT_OK) {
-                    val imageBitmap = data?.extras?.get("data") as Bitmap?
+                if (resultCode == RESULT_OK && data != null) {
+                    val imageBitmap = data.extras?.get("data") as Bitmap?
                     imageUri = getImageUri(imageBitmap)
                     ivFotoPeli.setImageURI(imageUri)
                 }
             }
             PEDIDO_ELEGIR_IMAGEN -> {
-                if (resultCode == RESULT_OK) {
-                    data?.data?.let {
+                if (resultCode == RESULT_OK && data != null) {
+                    data.data?.let {
                         imageUri = it
                         ivFotoPeli.setImageURI(imageUri)
                     }
