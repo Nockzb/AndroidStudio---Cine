@@ -15,10 +15,12 @@ class FilmDataActivity : AppCompatActivity() {
     companion object {
         const val REQUEST_EDIT_FILM = 1
         var ID_EDIT_FILM = ""
+        // Variable para vincular con el ImageView
+        lateinit var ivCartel: ImageView
 
         // Variables estáticas para almacenar los valores modificados
-        var urlImdbBoton: String = ""
-        // var linkImg: String = ""
+        lateinit var urlImdbBoton: String
+        lateinit var UriImg: Uri
 
         var nombrePeliA: String = ""
         var anioPeliA: String = ""
@@ -45,15 +47,15 @@ class FilmDataActivity : AppCompatActivity() {
         ID_EDIT_FILM = intent.getStringExtra(FilmListActivity.EXTRA_FILM_ID).toString()
 
         // Obtener el recurso de imagen según el id de la película
-        val imageResourceId: Int = when (ID_EDIT_FILM) {
-            "A" -> R.drawable.origins_movie
-            "B" -> R.drawable.matrix_movie
-            else -> -20
-        }
+        // val imageResourceId: Int = when (ID_EDIT_FILM) {
+           // "A" -> R.drawable.origins_movie
+           // "B" -> R.drawable.matrix_movie
+           // else -> -20
+        // }
 
-        // Actualizar la imagen de la película segun el id
-        val ivCartel: ImageView = findViewById(R.id.ivCartel)
-        ivCartel.setImageResource(imageResourceId)
+        // Se inicializa el ImageView
+        ivCartel = findViewById(R.id.ivCartel)
+        // ivCartel.setImageResource(imageResourceId)
 
         // Actualizar los elementos de la interfaz según el id de la película
         when (ID_EDIT_FILM) {
@@ -61,7 +63,10 @@ class FilmDataActivity : AppCompatActivity() {
                 // Película A
                 // Si aún no se editó nada, muestra la pelicula A
                 if (nombrePeliA.isNullOrEmpty()){
-                    actualizarInterfaz(getString(R.string.nombrePeliA), getString(R.string.anioPeliA), getString(R.string.directorPeliA), getString(R.string.imdb_url_A), getString(R.string.formatoPeliA), getString(R.string.GeneroPeliA), getString(R.string.comentariosA))
+                    // Variable para generar el Uri de la imagen
+                    val imgGuardada: Int = R.drawable.origins_movie
+                    val uriImgGuardada: Uri = Uri.parse("android.resource://$packageName/$imgGuardada")
+                    actualizarInterfaz(getString(R.string.nombrePeliA), getString(R.string.anioPeliA), getString(R.string.directorPeliA), getString(R.string.imdb_url_A), getString(R.string.formatoPeliA), getString(R.string.GeneroPeliA), getString(R.string.comentariosA), uriImgGuardada)
                 } else {
                     // Luego de la edición muestra los nuevos valores
                     actualizarInterfaz(
@@ -71,7 +76,8 @@ class FilmDataActivity : AppCompatActivity() {
                         imdbUrlA,
                         formatoPeliA,
                         generoPeliA,
-                        comentariosPeliA
+                        comentariosPeliA,
+                        UriImg
                     )
                 }
             }
@@ -79,7 +85,9 @@ class FilmDataActivity : AppCompatActivity() {
                 // Película B
                 // Si aún no se editó nada, muestra la pelicula B
                 if (nombrePeliB.isNullOrEmpty()){
-                    actualizarInterfaz(getString(R.string.nombrePeliB), getString(R.string.anioPeliB), getString(R.string.directorPeliB),  getString(R.string.imdb_url_B), getString(R.string.formatoPeliB), getString(R.string.GeneroPeliB), getString(R.string.comentariosB))
+                    val imgGuardada: Int = R.drawable.matrix_movie
+                    val uriImgGuardada: Uri = Uri.parse("android.resource://$packageName/$imgGuardada")
+                    actualizarInterfaz(getString(R.string.nombrePeliB), getString(R.string.anioPeliB), getString(R.string.directorPeliB),  getString(R.string.imdb_url_B), getString(R.string.formatoPeliB), getString(R.string.GeneroPeliB), getString(R.string.comentariosB), uriImgGuardada)
                 } else {
                     // Luego de la edición muestra los nuevos valores
                     actualizarInterfaz(
@@ -89,7 +97,8 @@ class FilmDataActivity : AppCompatActivity() {
                         imdbUrlB,
                         formatoPeliB,
                         generoPeliB,
-                        comentariosPeliB
+                        comentariosPeliB,
+                        UriImg
                     )
                 }
             }
@@ -145,7 +154,7 @@ class FilmDataActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun actualizarInterfaz(nombre: String, anio: String, director: String, enlaceIMDB: String, formato: String, genero: String, comentarios: String) {
+    private fun actualizarInterfaz(nombre: String, anio: String, director: String, enlaceIMDB: String, formato: String, genero: String, comentarios: String, imageUri: Uri?) {
         // Actualiza los elementos de la interfaz con la info de la película
         // que viene desde la otra actividad en el intent
         val tvNombrePelicula: TextView = findViewById(R.id.tvNombrePelicula)
@@ -155,6 +164,8 @@ class FilmDataActivity : AppCompatActivity() {
         val tvGenero: TextView = findViewById(R.id.tvFormato)
         val tvComentarios: TextView = findViewById(R.id.tvComentarios)
 
+        // Cargar la imagen desde el URI
+        ivCartel.setImageURI(imageUri)
 
         tvNombrePelicula.text = nombre
         tvAnioEstreno.text = anio
@@ -168,7 +179,10 @@ class FilmDataActivity : AppCompatActivity() {
     // Actualizar los elementos de la interfaz según el id de la película
     private fun actualizarInterfazSegunID(data: Intent?) {
         when (ID_EDIT_FILM) {
-            "A" -> {
+            "A", "B" -> {
+                // Recuperar el URI de la imagen como cadena y convertirlo a Uri
+                val uriString = data?.getStringExtra(FilmEditActivity.IMAGE_URI_KEY)
+                val imageUri = uriString?.let { Uri.parse(it) }
                 // Película A
                 actualizarInterfaz(
                     data?.getStringExtra("nombre") ?: "Ingresar nombre",
@@ -177,19 +191,8 @@ class FilmDataActivity : AppCompatActivity() {
                     data?.getStringExtra("enlaceImdb") ?: "",
                     data?.getStringExtra("formato") ?: "Ingresar director",
                     data?.getStringExtra("genero") ?: "Ingresar director",
-                    data?.getStringExtra("comentario") ?: "Ingresar comentarios"
-                )
-            }
-            "B" -> {
-                // Película B
-                actualizarInterfaz(
-                    data?.getStringExtra("nombre") ?: "Ingresar nombre",
-                    data?.getStringExtra("anio") ?: "Ingresar anio",
-                    data?.getStringExtra("director") ?: "Ingresar director",
-                    data?.getStringExtra("enlaceImdb") ?: "",
-                    data?.getStringExtra("formato") ?: "",
-                    data?.getStringExtra("genero") ?: "",
-                    data?.getStringExtra("comentario") ?: "Ingresar comentarios"
+                    data?.getStringExtra("comentario") ?: "Ingresar comentarios",
+                    imageUri
                 )
             }
         }

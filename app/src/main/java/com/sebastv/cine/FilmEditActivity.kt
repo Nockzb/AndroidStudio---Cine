@@ -10,10 +10,20 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
+import android.provider.MediaStore
+import androidx.core.content.ContextCompat
+import java.io.ByteArrayOutputStream
 
 class FilmEditActivity : AppCompatActivity() {
     companion object {
         var ID_EDIT = ""
+        const val IMAGE_URI_KEY = "imageUri"
+        const val PEDIDO_CAPTURA_IMAGEN = 1
+        const val PEDIDO_ELEGIR_IMAGEN = 2
+        var DEFAULT_IMAGE_RESOURCE = R.drawable.insertar_img
     }
     // Inputs e imagen
     private lateinit var ivFotoPeli: ImageView
@@ -25,9 +35,27 @@ class FilmEditActivity : AppCompatActivity() {
     private lateinit var spnFormato: Spinner
     private lateinit var spnGenero: Spinner
 
+    // Variable para almacenar el URI de la img
+    private var imageUri: Uri? = null
+
+    // Funcion para que almacene la info de la Uri de la imagen al destruirse la actividad
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Guarda el URI de la imagen en el estado de la instancia
+        outState.putString(IMAGE_URI_KEY, imageUri?.toString())
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_film_edit)
+
+        if (savedInstanceState != null) {
+            val savedImageUri = savedInstanceState.getString(IMAGE_URI_KEY)
+            if (!savedImageUri.isNullOrEmpty()) {
+                imageUri = Uri.parse(savedImageUri)
+                ivFotoPeli.setImageURI(imageUri)
+            }
+        }
 
         // Obtener el filmId enviado desde la otra actividad
         ID_EDIT = intent.getStringExtra("idedit").toString()
@@ -41,6 +69,12 @@ class FilmEditActivity : AppCompatActivity() {
         spnFormato = findViewById<View?>(R.id.spnFormato) as Spinner
         spnGenero =  findViewById<View?>(R.id.spnGenero) as Spinner
         ivFotoPeli = findViewById(R.id.ivFotoPeli)
+
+        // Botones
+        val btnTomarFoto: Button = findViewById(R.id.btnTomarFoto)
+        val btnElegirImg: Button = findViewById(R.id.btnElegirImg)
+        val btnGuardar: Button = findViewById(R.id.btnGuardar)
+        val btnCancelar: Button = findViewById(R.id.btnCancelar)
 
         // Actualiza los elementos de la interfaz según el id de la película
         // para pre-rellenar los EditTexts
@@ -79,21 +113,24 @@ class FilmEditActivity : AppCompatActivity() {
             }
         }
 
-        // Botones
-        val btnTomarFoto: Button = findViewById(R.id.btnTomarFoto)
-        val btnElegirImg: Button = findViewById(R.id.btnElegirImg)
-        val btnGuardar: Button = findViewById(R.id.btnGuardar)
-        val btnCancelar: Button = findViewById(R.id.btnCancelar)
-
         // Manejadores para botones
         // Manejador para el botón "Tomar Foto"
         btnTomarFoto.setOnClickListener {
-
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                lanzarTomarFotoIntent()
+            } else {
+                // Solicitar permisos de la cámara
+                requestPermissions(arrayOf(android.Manifest.permission.CAMERA), PEDIDO_CAPTURA_IMAGEN)
+            }
         }
 
         // Manejador para el botón "Elegir Imagen"
         btnElegirImg.setOnClickListener {
-
+            lanzarElegirImagenIntent()
         }
 
         // Manejador para el botón "Guardar"
@@ -119,6 +156,9 @@ class FilmEditActivity : AppCompatActivity() {
         val opcGenero = spnGenero.selectedItem.toString()
 
         val resultIntent = Intent()
+        // Enviar el nuevo Uri de imagen
+        resultIntent.putExtra(IMAGE_URI_KEY,imageUri?.toString() ?: Uri.parse("android.resource://$packageName/${DEFAULT_IMAGE_RESOURCE}").toString()
+        )
         resultIntent.putExtra("nombre", nuevoNombre)
         resultIntent.putExtra("anio", nuevoAnio)
         resultIntent.putExtra("director", nuevoDirector)
@@ -160,5 +200,75 @@ class FilmEditActivity : AppCompatActivity() {
         setResult(Activity.RESULT_CANCELED)
         Toast.makeText(this,"Operación cancelada", Toast.LENGTH_SHORT).show()
         finish()
+    }
+
+    // Función para solicitud de permisos de la cámara
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PEDIDO_CAPTURA_IMAGEN -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    lanzarTomarFotoIntent()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Permiso de la cámara denegado",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+    // Función para manejar el resultado de la camara o la galeria
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            PEDIDO_CAPTURA_IMAGEN -> {
+                if (resultCode == RESULT_OK) {
+                    val imageBitmap = data?.extras?.get("data") as Bitmap?
+                    imageUri = getImageUri(imageBitmap)
+                    ivFotoPeli.setImageURI(imageUri)
+                }
+            }
+            PEDIDO_ELEGIR_IMAGEN -> {
+                if (resultCode == RESULT_OK) {
+                    data?.data?.let {
+                        imageUri = it
+                        ivFotoPeli.setImageURI(imageUri)
+                    }
+                }
+            }
+        }
+    }
+
+    // Función para iniciar la actividad de la cámara
+    private fun lanzarTomarFotoIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                startActivityForResult(takePictureIntent, PEDIDO_CAPTURA_IMAGEN)
+            }
+        }
+    }
+
+    private fun lanzarElegirImagenIntent() {
+        val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(pickIntent, PEDIDO_ELEGIR_IMAGEN)
+    }
+
+    private fun getImageUri(inImage: Bitmap?): Uri {
+        val bytes = ByteArrayOutputStream()
+        inImage?.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(
+            contentResolver,
+            inImage,
+            "Title",
+            null
+        )
+        return Uri.parse(path)
     }
 }

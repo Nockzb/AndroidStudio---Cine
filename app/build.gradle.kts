@@ -37,6 +37,7 @@ android {
 
 dependencies {
 
+    implementation ("androidx.core:core:1.7.0") // Se agrega para gestionar la foto tomada desde la app
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.4.0")
