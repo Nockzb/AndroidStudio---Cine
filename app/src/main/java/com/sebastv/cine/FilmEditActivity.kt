@@ -1,6 +1,7 @@
 package com.sebastv.cine
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -264,10 +265,17 @@ class FilmEditActivity : AppCompatActivity() {
 
     // Función para iniciar la actividad de la cámara
     private fun lanzarTomarFotoIntent() {
+        val resolver = contentResolver
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, "foto_${System.currentTimeMillis()}.jpg")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        }
+
+        val imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                startActivityForResult(takePictureIntent, PEDIDO_CAPTURA_IMAGEN)
-            }
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+            startActivityForResult(takePictureIntent, PEDIDO_CAPTURA_IMAGEN)
         }
     }
 
